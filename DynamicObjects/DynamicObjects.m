@@ -28,7 +28,8 @@
 	*)
 
 
-  (*TODO: 
+  (*TODO:
+  
      + investigate: "state$108$$","state$109" removal maybe?
          OK, symbols created on DM lifecycle:
              DynObjDump`state$i      // Parsed version  \[Rule] Remove @ DynObjDump`*
@@ -53,6 +54,8 @@
      - improvment: More extensive DynamicObject setters. Support for ranges etc.
      
      - feature: Support for multidimensional DynamicObject? 
+     
+     - feature: utility function to convert _Dynamic to fe side version with FEPrivate` equivalents.
    *)
 
 
@@ -66,8 +69,13 @@ BeginPackage["DynamicObjects`"];
   Unprotect["`*", "`*`*"]
   ClearAll["`*", "`*`*"]
   
-  DynamicModuleNumber;
-  $DynamicModuleNumber;
+  
+  $DynamicModuleNumber::usage = "Returns the number or $Failed + message." <> 
+    "By default $DynamicModuleNumber:=DynamicModuleNumber[] but you can use it to block/inject the number e.g. when scheduling async tasks where DynamicModuleNumber[] would be out of luck."<>
+    "It is better to use it in your functions in case someone will need to do something fancy with injected number.";
+    
+  DynamicModuleNumber::usage = "DynamicModuleNumber[] tries to determine the number based on the environment. Use $DynamicModuleNumber unlees you need this one";
+  
   
   DynamicObjectModule;
   DynamicObject;
@@ -80,48 +88,95 @@ Begin["`Private`"];
 (* Implementation code*)
 
 
+(* ::Section:: *)
+(*$DynamicModuleNumber *)
+
+
+(*JF, y u no do dis?*)
+
+
 $DynamicModuleNumber := DynamicModuleNumber[];
 
 
-DynamicModuleNumber::noparent="DynamicModuleNumber not executed in DynamicModule";
-DynamicModuleNumber::nokids="DynamicModuleNumber can not access any variable of parent DynamicModule";
+DynamicModuleNumber::noparent = "DynamicModuleNumber not executed in DynamicModule";
+DynamicModuleNumber::nokids   = "DynamicModuleNumber can not access any variable of parent DynamicModule";
+
 
 DynamicModuleNumber[]:= DynamicModuleNumber[FrontEnd`Private`names]
 
-DynamicModuleNumber[HoldPattern[FrontEnd`Private`names]]:=(Message[DynamicModuleNumber::noparent];$Failed);
 
-DynamicModuleNumber[{}]:=(Message[DynamicModuleNumber::nokids];$Failed);
-
-DynamicModuleNumber[{Hold[sym_Symbol],___}]:=First @ StringCases[SymbolName[Unevaluated[sym]],__~~"$$"~~dmn:DigitCharacter..~~EndOfString:>ToExpression[dmn]]
-
-
-$objSymbolTemplate = StringTemplate["DynObjDump<*\"`\"*>``$``$$"];
-$objFESymbolTemplate = StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];
+DynamicModuleNumber[HoldPattern[FrontEnd`Private`names]]:=(
+  Message[DynamicModuleNumber::noparent]
+; $Failed
+);
 
 
-DynamicObjectModule[expr_]:=Module[
+DynamicModuleNumber[{}]:=(
+  Message[DynamicModuleNumber::nokids]
+; $Failed
+);
+
+
+DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
+  SymbolName[Unevaluated[sym]]
+, StringExpression[__, "$$", dmn:DigitCharacter.., EndOfString] :> ToExpression[dmn]
+]
+
+
+(* ::Section:: *)
+(*DynamicObjectModule*)
+
+
+$objSymbolTemplate = StringTemplate["DynObjDump<*\"`\"*>``$``$$"];                 (* DynObjDump`name$index$$ *)
+$objFESymbolTemplate = StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];  (* FE`DynObjDump`name$index$$dynamicModuleNumber *)
+
+
+DynamicObjectModule // Options = Options @ DynamicModule;
+
+
+DynamicObjectModule[expr_, patt: OptionsPattern[]]:=Module[
   {wrap, objs}
 , SetAttributes[wrap, HoldAll]
 
-; objs = Join @@ (Union @ Cases[expr, DynamicObject[name_String, n_Integer] :> ToExpression[$objSymbolTemplate[name,n], StandardForm, wrap], \[Infinity]])
+; objs = Join @@ (Union @ Cases[expr, DynamicObject[name_String, n_Integer] :> ToExpression[$objSymbolTemplate[name,n], StandardForm, Hold], \[Infinity]])
 
-; DynamicObjectModule[
-    Hold @@ objs
-  , expr /. DynamicObject[name_String, n_Integer]:>RuleCondition@ToExpression[$objSymbolTemplate[name,n], StandardForm, wrap] /. wrap[x_]:>x
-  ]
+; DynamicObjectModule @@ (
+    {
+      objs (* Hold[sym1, sym2, ...] *)
+    , expr (*body with DynamicObjects inside*)
+    , patt (*options*)
+    } /. 
+      DynamicObject[name_String, n_Integer]:>RuleCondition@ToExpression[$objSymbolTemplate[name,n], StandardForm, wrap] /. 
+      wrap[x_] :> x 
+  )
 ];
 
 
-DynamicObjectModule[Hold[sym__Symbol],expr_]:=DynamicModule[
+DynamicObjectModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicModule[
   {sym}
 , expr
-, UnsavedVariables :> {sym} (*let's not overheat the front end *)
-, Initialization :> (Remove["DynObjDump`*"]) (*those symbols do not work anyway, were created during inital stages of DynamicModule generation*)
-, Deinitialization :> (
-     (*TODO: poor man's version of $DMN to not require user to Need DynamicObjects`*)
-    Remove[#]& @ ("FE`DynObjDump`*$$"<>ToString[$DynamicModuleNumber])
-  ) (* this will remove FE`objName$index$$dmn symbols only, should add something here *)
+
+    (*let's not overheat the front end *)
+, UnsavedVariables :> {sym}                  
+
+    (*those symbols do not work anyway, were created during inital stages of DynamicModule generation*)
+, Evaluate @ OptionValue[Automatic, Automatic, Initialization, 
+    Function[init, Initialization :> (init; Remove["DynObjDump`*"] ), HoldAll]
+  ]
+    (*TODO: poor man's version of $DMN to not require user to Need DynamicObjects`*)
+    (* this will remove FE`objName$index$$dmn symbols only, should add something here *)
+, Evaluate @ OptionValue[Automatic, Automatic, Deinitialization, 
+    Function[deinit, Deinitialization :> (deinit; Remove[#]& @ ("FE`DynObjDump`*$$"<>ToString[$DynamicModuleNumber]) ), HoldAll]
+  ]
+ 
 ]
+
+
+(* ::Section:: *)
+(*DynamicObject setter*)
+
+
+(*TODO: can this be cached per $DynamicModuleNumber? *)
 
 
 DynamicObject /: Set[DynamicObject[name_?StringQ, n_?IntegerQ], val_]:= Catch @ ToExpression[
