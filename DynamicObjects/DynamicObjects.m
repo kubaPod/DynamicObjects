@@ -133,8 +133,22 @@ DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
 (*DynamicObjectModule*)
 
 
-$objSymbolTemplate = StringTemplate["DynObjDump<*\"`\"*>``$``$$"];                 (* DynObjDump`name$index$$ *)
-$objFESymbolTemplate = StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];  (* FE`DynObjDump`name$index$$dynamicModuleNumber *)
+$objSymbolTemplate = TemplateWith[
+  {"context" -> "DynObjDump`"
+  ,"symbolName" -> StringTemplate["`1`$`2`$$"]}
+, StringTemplate["`context``symbolName`"]
+];                 (* DynObjDump`name$index$$ *)
+$objFESymbolTemplate = TemplateWith[
+  { "context1" -> "FE`"
+  , "context2" -> "DynObjDump`"
+  , "symbolName" -> StringTemplate["`1`$`2`$$`3`"]}
+, StringTemplate["`context1``context2``symbolName`"]
+]
+StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];  (* FE`DynObjDump`name$index$$dynamicModuleNumber *)
+
+
+ObjectSymbolString[name_String, spec:(_String|_Integer)..]:=StringJoin[{"DynObjDump`", StringRiffle[{name, spec}, "$"]}]
+ObjectFrontEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringJoin[{"FE`DynObjDump`", StringRiffle[{name, spec}, "$"],"$$", ToString @ dynModNumber}]
 
 
 DynamicObjectModule // Options = Options @ DynamicModule;
@@ -144,7 +158,7 @@ DynamicObjectModule[expr_, patt: OptionsPattern[]]:=Module[
   {wrap, objs}
 , SetAttributes[wrap, HoldAll]
 
-; objs = Join @@ (Union @ Cases[expr, DynamicObject[name_String, n_Integer] :> ToExpression[$objSymbolTemplate[name,n], StandardForm, Hold], \[Infinity]])
+; objs = Join @@ (Union @ Cases[expr, DynamicObject[name_String, spec:(_String|_Integer)..] :> ToExpression[ObjectSymbolString[name, spec], StandardForm, Hold], \[Infinity]])
 
 ; DynamicObjectModule @@ (
     {
@@ -152,8 +166,8 @@ DynamicObjectModule[expr_, patt: OptionsPattern[]]:=Module[
     , expr (*body with DynamicObjects inside*)
     , patt (*options*)
     } /. 
-      DynamicObject[name_String, n_Integer]:>RuleCondition@ToExpression[$objSymbolTemplate[name,n], StandardForm, wrap] /. 
-      wrap[x_] :> x 
+      DynamicObject[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[ObjectSymbolString[name, spec], StandardForm, wrap] /. 
+        wrap[x_] :> x 
   )
 ];
 
@@ -185,8 +199,8 @@ DynamicObjectModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicMod
 (*TODO: can this be cached per $DynamicModuleNumber? *)
 
 
-DynamicObject /: Set[DynamicObject[name_?StringQ, n_?IntegerQ], val_]:= Catch @ ToExpression[
-  $objFESymbolTemplate[name, n, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
+DynamicObject /: Set[DynamicObject[name_?StringQ, spec: (_?IntegerQ|_?StringQ)..], val_]:= Catch @ ToExpression[
+  ObjectFrontEndSymbolString[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
 , StandardForm
 , Function[symbol, symbol = val, HoldAll] 
 ]
