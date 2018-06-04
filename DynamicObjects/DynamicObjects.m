@@ -56,6 +56,12 @@
      - feature: Support for multidimensional DynamicObject? 
      
      - feature: utility function to convert _Dynamic to fe side version with FEPrivate` equivalents.
+     
+     - option: light locator env
+     
+     - option: replace colors
+     
+     - option: try to create fe side Dynamics
    *)
 
 
