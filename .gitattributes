@@ -1,3 +1,4 @@
+
 *.m linguist-language=Mathematica
-*.m linguist-language=Mathematica
-*.m linguist-language=Mathematica
+*.wl linguist-language=Mathematica
+*.wls linguist-language=Mathematica
