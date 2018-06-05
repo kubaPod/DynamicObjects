@@ -133,22 +133,29 @@ DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
 (*DynamicObjectModule*)
 
 
-$objSymbolTemplate = TemplateWith[
-  {"context" -> "DynObjDump`"
-  ,"symbolName" -> StringTemplate["`1`$`2`$$"]}
+(*$objSymbolTemplate = TemplateWith[
+  {"context" \[Rule] "DynObjDump`"
+  ,"symbolName" \[Rule] StringTemplate["`1`$`2`$$"]}
 , StringTemplate["`context``symbolName`"]
 ];                 (* DynObjDump`name$index$$ *)
 $objFESymbolTemplate = TemplateWith[
-  { "context1" -> "FE`"
-  , "context2" -> "DynObjDump`"
-  , "symbolName" -> StringTemplate["`1`$`2`$$`3`"]}
+  { "context1" \[Rule] "FE`"
+  , "context2" \[Rule] "DynObjDump`"
+  , "symbolName" \[Rule] StringTemplate["`1`$`2`$$`3`"]}
 , StringTemplate["`context1``context2``symbolName`"]
 ]
-StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];  (* FE`DynObjDump`name$index$$dynamicModuleNumber *)
+StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];  (* FE`DynObjDump`name$index$$dynamicModuleNumber *)*)
 
 
-ObjectSymbolString[name_String, spec:(_String|_Integer)..]:=StringJoin[{"DynObjDump`", StringRiffle[{name, spec}, "$"]}]
-ObjectFrontEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringJoin[{"FE`DynObjDump`", StringRiffle[{name, spec}, "$"],"$$", ToString @ dynModNumber}]
+ObjectSymbolString[name_String, spec:(_String|_Integer)..]:= StringRiffle[
+  {name, spec}
+, {"DynObjDump`", "$", "$$"}];
+
+
+ObjectFrontEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringRiffle[
+  {name, spec}
+, {"FE`DynObjDump`", "$", "$$" <> ToString @ dynModNumber}
+];
 
 
 DynamicObjectModule // Options = Options @ DynamicModule;
