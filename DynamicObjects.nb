@@ -7,12 +7,12 @@ Cell["DynamicObjects", \
 Cell[BoxData[
  RowBox[{"PacletDirectoryAdd", " ", "@", " ", 
   RowBox[{"NotebookDirectory", "[", "]"}]}]], "Input",
- CellLabel->"In[1]:=",ExpressionUUID->"ddd7a098-3ccb-435a-8e57-39a65b9aab13"],
+ CellLabel->"In[49]:=",ExpressionUUID->"ddd7a098-3ccb-435a-8e57-39a65b9aab13"],
 
 Cell[BoxData[
  RowBox[{"SetDirectory", " ", "@", " ", 
   RowBox[{"NotebookDirectory", "[", "]"}]}]], "Input",
- CellLabel->"In[2]:=",ExpressionUUID->"562e8e51-dba0-4486-8843-64bfb8a9d558"],
+ CellLabel->"In[50]:=",ExpressionUUID->"562e8e51-dba0-4486-8843-64bfb8a9d558"],
 
 Cell[BoxData[
  RowBox[{"Directory", "[", "]"}]], "Input",
@@ -20,7 +20,24 @@ Cell[BoxData[
 
 Cell[BoxData[
  RowBox[{"<<", "DynamicObjects`"}]], "Input",
- CellLabel->"In[3]:=",ExpressionUUID->"980943af-fcf9-47e3-b4cf-82a61cb41552"],
+ CellLabel->"In[51]:=",ExpressionUUID->"980943af-fcf9-47e3-b4cf-82a61cb41552"],
+
+Cell[CellGroupData[{
+
+Cell["notes", \
+"Section",ExpressionUUID->"1a986ba3-fbf9-4fe2-b220-642dd85c3a8b"],
+
+Cell["\<\
+It is not a golden hammer.
+
+It should help when there are multiple dynamic objects in your interface but \
+you want to modify single/small groups of them independently.
+
+To modify all of them at once different approaches would be more appropriate. \
+e..g controlling positions as GraphicsComplex spec, redrawing all at once \
+rather than each one etc.\
+\>", "Text",ExpressionUUID->"8a6490d0-79a7-4015-b488-afca7a44a2af"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -47,7 +64,7 @@ Cell[BoxData[{
       RowBox[{"names", ",", 
        RowBox[{"{", "2", "}"}]}], "]"}], ",", "1000"}], "]"}]}], 
   ";"}]}], "Input",
- CellLabel->"In[12]:=",ExpressionUUID->"26994f90-e832-4489-857f-b4bb89830bac"],
+ CellLabel->"In[19]:=",ExpressionUUID->"26994f90-e832-4489-857f-b4bb89830bac"],
 
 Cell[BoxData[{
  RowBox[{"Names", "[", "\"\<DynObjDump`*\>\"", "]"}], "\[IndentingNewLine]", 
@@ -55,11 +72,12 @@ Cell[BoxData[{
  CellChangeTimes->{{3.736590901921925*^9, 3.7365909097427564`*^9}, {
   3.7366155482685375`*^9, 3.7366156062679377`*^9}},
  CellLabel->"In[24]:=",ExpressionUUID->"8b39096a-3b51-4ed5-b97c-f3282861e2cf"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["graf", "Section",ExpressionUUID->"129a9026-112d-4179-8f62-3c4c4a1990e9"],
+Cell["graph: simple example", \
+"Section",ExpressionUUID->"129a9026-112d-4179-8f62-3c4c4a1990e9"],
 
 Cell[BoxData[
  RowBox[{"DynamicModule", "[", 
@@ -158,7 +176,7 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["graf + palette + scheduled tasks", \
+Cell["graph: scheduled tasks with local variables", \
 "Section",ExpressionUUID->"ecf501dd-16b1-4fc2-b450-c24ec0684089"],
 
 Cell[BoxData[
@@ -322,6 +340,306 @@ Cell[BoxData[
   RowBox[{"ScheduledTasks", "[", "]"}]}]], "Input",
  CellChangeTimes->{{3.7365862971185617`*^9, 3.736586303685817*^9}},
  CellLabel->"In[61]:=",ExpressionUUID->"ab2b242c-00e7-4e17-b4ca-31dac55b324d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["graph: FE side example", \
+"Section",ExpressionUUID->"fb53b4e7-0fdc-43c2-87fd-caf174d243aa"],
+
+Cell[BoxData[
+ RowBox[{"Style", "[", 
+  RowBox[{
+   RowBox[{"Dynamic", "@", 
+    RowBox[{"FrontEnd`CurrentValue", "[", 
+     RowBox[{"{", 
+      RowBox[{"TaggingRules", ",", "\"\<locator\>\""}], "}"}], "]"}]}], ",", 
+   RowBox[{"TaggingRules", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\"\<locator\>\"", "\[Rule]", 
+      RowBox[{"RawBoxes", "@", 
+       RowBox[{
+        RowBox[{"FrontEndResource", "[", 
+         RowBox[{
+         "\"\<FEExpressions\>\"", ",", "\"\<LocatorDefaultThumb\>\""}], "]"}],
+         "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", "1"}], "]"}], "]"}]}]}], "}"}]}]}], "]"}]], "Input",
+ CellLabel->
+  "In[138]:=",ExpressionUUID->"25e24228-4a97-4e4d-aed9-062fc63ce57f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DynamicModule", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"i", "=", "1"}], "}"}], "\n", ",", " ", 
+     RowBox[{"DynamicObjectModule", "[", "\n", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"Column", "[", 
+          RowBox[{"{", "\n", "   ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Animator", "[", 
+              RowBox[{
+               RowBox[{"Dynamic", "[", 
+                RowBox[{"i", ",", " ", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{
+                    RowBox[{"i", "=", "#"}], ";", " ", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", " ", 
+                    RowBox[{"i", "-", "1"}]}], "]"}], "=", "False"}], ";", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", " ", "i"}], "]"}], "=", 
+                    "True"}]}], ")"}], "&"}]}], "]"}], ",", " ", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", " ", "n", ",", " ", "1"}], "}"}], ",", " ", 
+               RowBox[{"AnimationRate", "\[Rule]", "15"}], ",", " ", 
+               RowBox[{"AnimationDirection", "\[Rule]", "ForwardBackward"}]}],
+               "]"}], ";"}], "\n", "   ", "\n", " ", ",", " ", "#"}], "}"}], 
+          "\n", " ", "]"}], "&"}], " ", "@", " ", 
+        RowBox[{"Graphics", "[", "\n", "  ", 
+         RowBox[{
+          RowBox[{"{", " ", "\n", "    ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", " ", 
+               RowBox[{
+                RowBox[{"RawBoxes", " ", "@", " ", 
+                 RowBox[{"DynamicBox", "[", "\n", "        ", 
+                  RowBox[{"FEPrivate`If", "[", "\n", "          ", 
+                   RowBox[{
+                    RowBox[{"FEPrivate`SameQ", "[", "\n", "            ", 
+                    RowBox[{
+                    RowBox[{"FEPrivate`Or", "[", " ", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", " ", 
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", " ", "#2"}], "]"}]}], "]"}],
+                     "\n", "          ", ",", " ", "True"}], "\n", 
+                    "          ", "]"}], "\n", "        ", ",", " ", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "0", ",", "1"}], "]"}], "\n", 
+                    "        ", ",", " ", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{
+                    "0.", " ", ",", "0.", " ", ",", "0.", " ", ",", " ", 
+                    ".1"}], "]"}]}], "\n", "        ", "\n", "        ", 
+                   "]"}], "\n", "      ", "]"}]}], "\n", "    ", ",", " ", 
+                RowBox[{"Line", "[", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"pts", "[", "#1", "]"}], ",", 
+                   RowBox[{"pts", "[", "#2", "]"}]}], "}"}], "]"}]}], "\n", 
+               "    ", "}"}], "&"}], " ", "@@@", " ", "edges"}], "\n", "  ", 
+            ",", " ", 
+            RowBox[{"PointSize", "[", "0.025", "]"}], "\n", "  ", ",", " ", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", " ", "\n", "      ", 
+               RowBox[{
+                RowBox[{"RawBoxes", " ", "@", " ", 
+                 RowBox[{"DynamicBox", "[", 
+                  RowBox[{"FEPrivate`If", "[", 
+                   RowBox[{
+                    RowBox[{"SameQ", "[", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
+                    "True"}], "]"}], ",", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "0", ",", "1"}], "]"}], ",", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "]"}]}], "]"}], 
+                  "]"}]}], "\n", "    ", ",", " ", 
+                RowBox[{"EventHandler", "[", 
+                 RowBox[{
+                  RowBox[{"Point", "@", 
+                   RowBox[{"pts", "[", "#", "]"}]}], "\n", "      ", ",", " ", 
+                  RowBox[{"{", " ", 
+                   RowBox[{
+                    RowBox[{
+                    "\"\<MouseEntered\>\"", " ", "\[RuleDelayed]", " ", 
+                    RowBox[{"FEPrivate`Set", "[", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
+                    "True"}], "]"}]}], "\n", "        ", ",", " ", 
+                    RowBox[{"\"\<MouseExited\>\"", "\[RuleDelayed]", 
+                    RowBox[{"FEPrivate`Set", "[", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
+                    "False"}], "]"}]}]}], "\n", "        ", "}"}]}], "\n", 
+                 "      ", "]"}]}], "\n", "    ", "}"}], "&"}], " ", "/@", 
+             " ", "names"}]}], "\n", "  ", "}"}], "\n", ",", " ", 
+          RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "\n", "]"}]}], ",", 
+       "\n", 
+       RowBox[{"Initialization", " ", "\[RuleDelayed]", " ", 
+        RowBox[{"(", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Set", "[", 
+            RowBox[{
+             RowBox[{"DynamicObject", "[", 
+              RowBox[{"\"\<state\>\"", ",", " ", "#"}], "]"}], ",", "False"}],
+             "]"}], " ", "&"}], " ", "/@", " ", 
+          RowBox[{"Range", "[", "n", "]"}]}], ")"}]}]}], "\n", "]"}]}], "\n", 
+    "]"}], "//", 
+   RowBox[{
+    RowBox[{"CDFDeploy", "[", 
+     RowBox[{"\"\<test.cdf\>\"", ",", "#"}], "]"}], "&"}]}], "//", 
+  "SystemOpen"}]], "Code",
+ CellLabel->"In[29]:=",ExpressionUUID->"f6f317d6-b672-443e-bc49-8a01f80a3b27"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["graph: FE side example -> .cdf", \
+"Section",ExpressionUUID->"f337a640-59a0-4040-9aea-caea1ee15250"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DynamicModule", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"i", "=", "1"}], "}"}], "\n", ",", " ", 
+     RowBox[{"DynamicObjectModule", "[", "\n", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"Column", "[", 
+          RowBox[{"{", "\n", "   ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Animator", "[", 
+              RowBox[{
+               RowBox[{"Dynamic", "[", 
+                RowBox[{"i", ",", " ", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{
+                    RowBox[{"i", "=", "#"}], ";", " ", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", " ", 
+                    RowBox[{"i", "-", "1"}]}], "]"}], "=", "False"}], ";", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", " ", "i"}], "]"}], "=", 
+                    "True"}]}], ")"}], "&"}]}], "]"}], ",", " ", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", " ", "n", ",", " ", "1"}], "}"}], ",", " ", 
+               RowBox[{"AnimationRate", "\[Rule]", "15"}], ",", " ", 
+               RowBox[{"AnimationDirection", "\[Rule]", "ForwardBackward"}]}],
+               "]"}], ";"}], "\n", "   ", "\n", " ", ",", " ", "#"}], "}"}], 
+          "\n", " ", "]"}], "&"}], " ", "@", " ", 
+        RowBox[{"Graphics", "[", "\n", "  ", 
+         RowBox[{
+          RowBox[{"{", " ", "\n", "    ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", " ", 
+               RowBox[{
+                RowBox[{"RawBoxes", " ", "@", " ", 
+                 RowBox[{"DynamicBox", "[", "\n", "        ", 
+                  RowBox[{"FEPrivate`If", "[", "\n", "          ", 
+                   RowBox[{
+                    RowBox[{"FEPrivate`SameQ", "[", "\n", "            ", 
+                    RowBox[{
+                    RowBox[{"FEPrivate`Or", "[", " ", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", " ", 
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", " ", "#2"}], "]"}]}], "]"}],
+                     "\n", "          ", ",", " ", "True"}], "\n", 
+                    "          ", "]"}], "\n", "        ", ",", " ", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "0", ",", "1"}], "]"}], "\n", 
+                    "        ", ",", " ", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{
+                    "0.", " ", ",", "0.", " ", ",", "0.", " ", ",", " ", 
+                    ".1"}], "]"}]}], "\n", "        ", "\n", "        ", 
+                   "]"}], "\n", "      ", "]"}]}], "\n", "    ", ",", " ", 
+                RowBox[{"Line", "[", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"pts", "[", "#1", "]"}], ",", 
+                   RowBox[{"pts", "[", "#2", "]"}]}], "}"}], "]"}]}], "\n", 
+               "    ", "}"}], "&"}], " ", "@@@", " ", "edges"}], "\n", "  ", 
+            ",", " ", 
+            RowBox[{"PointSize", "[", "0.025", "]"}], "\n", "  ", ",", " ", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", " ", "\n", "      ", 
+               RowBox[{
+                RowBox[{"RawBoxes", " ", "@", " ", 
+                 RowBox[{"DynamicBox", "[", 
+                  RowBox[{"FEPrivate`If", "[", 
+                   RowBox[{
+                    RowBox[{"SameQ", "[", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
+                    "True"}], "]"}], ",", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "0", ",", "1"}], "]"}], ",", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "]"}]}], "]"}], 
+                  "]"}]}], "\n", "    ", ",", " ", 
+                RowBox[{"EventHandler", "[", 
+                 RowBox[{
+                  RowBox[{"Point", "@", 
+                   RowBox[{"pts", "[", "#", "]"}]}], "\n", "      ", ",", " ", 
+                  RowBox[{"{", " ", 
+                   RowBox[{
+                    RowBox[{
+                    "\"\<MouseEntered\>\"", " ", "\[RuleDelayed]", " ", 
+                    RowBox[{"FEPrivate`Set", "[", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
+                    "True"}], "]"}]}], "\n", "        ", ",", " ", 
+                    RowBox[{"\"\<MouseExited\>\"", "\[RuleDelayed]", 
+                    RowBox[{"FEPrivate`Set", "[", 
+                    RowBox[{
+                    RowBox[{"DynamicObject", "[", 
+                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
+                    "False"}], "]"}]}]}], "\n", "        ", "}"}]}], "\n", 
+                 "      ", "]"}]}], "\n", "    ", "}"}], "&"}], " ", "/@", 
+             " ", "names"}]}], "\n", "  ", "}"}], "\n", ",", " ", 
+          RowBox[{"ImageSize", "\[Rule]", "Full"}]}], "\n", "]"}]}], ",", 
+       "\n", 
+       RowBox[{"Initialization", " ", "\[RuleDelayed]", " ", 
+        RowBox[{"(", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Set", "[", 
+            RowBox[{
+             RowBox[{"DynamicObject", "[", 
+              RowBox[{"\"\<state\>\"", ",", " ", "#"}], "]"}], ",", "False"}],
+             "]"}], " ", "&"}], " ", "/@", " ", 
+          RowBox[{"Range", "[", "n", "]"}]}], ")"}]}]}], "\n", "]"}], ",", 
+     "\n", 
+     RowBox[{"SaveDefinitions", "\[Rule]", "True"}]}], "\n", "]"}], "//", 
+   RowBox[{
+    RowBox[{"CDFDeploy", "[", 
+     RowBox[{"\"\<test.cdf\>\"", ",", "#"}], "]"}], "&"}]}], "//", 
+  "SystemOpen"}]], "Code",
+ CellLabel->"In[31]:=",ExpressionUUID->"bdb17c78-400a-4371-a7c1-6ed4f38f9ba7"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -718,8 +1036,13 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["FEPrivate`Set guidelines", \
+Cell["FrontEnd side programming", \
 "Section",ExpressionUUID->"e58f6f66-300e-47d7-9d2c-75ee613300ee"],
+
+Cell[CellGroupData[{
+
+Cell["FEPrivate`Set guidelines", \
+"Subsection",ExpressionUUID->"166aadf6-8c6b-46ae-9508-1e9c29cf3c1e"],
 
 Cell["this can work fe side", \
 "Item",ExpressionUUID->"d8681742-8c10-4235-9f8a-624ed3ce3bff"],
@@ -727,16 +1050,35 @@ Cell["this can work fe side", \
 Cell[BoxData[
  RowBox[{"FEPrivate`Set", "[", 
   RowBox[{"_Symbol", ",", 
-   RowBox[{"_String", "|", "_Real", "|", "_Integer"}]}], 
+   RowBox[{"_String", "|", "_Real", "|", "_Integer", "|", "_RGBColor"}]}], 
   "]"}]], "Input",ExpressionUUID->"b3145a8b-b1c7-432a-94b6-abab75a966b6"],
 
-Cell["this will have to go via kernel", \
-"Item",ExpressionUUID->"fe35a3cc-d3be-4a2a-a67c-c17addcc06ae"],
-
 Cell[BoxData[
- RowBox[{"FEPrivate`Set", "[", 
-  RowBox[{"_Symbol", ",", "_"}], 
-  "]"}]], "Input",ExpressionUUID->"5bdee75d-d5fb-4109-b5a7-18b17e8e3b5a"],
+ RowBox[{"DynamicModule", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"x", "=", "Blue"}], ",", 
+     RowBox[{"y", "=", "Blue"}]}], "}"}], ",", 
+   RowBox[{"(*", 
+    RowBox[{"run", " ", "in", " ", "link", " ", "snooper", " ", "kernel"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Button", "[", 
+        RowBox[{"\"\<test\>\"", ",", 
+         RowBox[{"FEPrivate`Set", "[", 
+          RowBox[{"x", ",", 
+           RowBox[{"LABColor", "[", "1", "]"}]}], "]"}], ",", 
+         RowBox[{"Evaluator", "\[Rule]", "Automatic"}]}], "]"}], ",", 
+       RowBox[{"Dynamic", "[", 
+        RowBox[{"x", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}], 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "}"}], "]"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->"In[57]:=",ExpressionUUID->"b843de73-c6ea-4b60-9c3f-0a997cae41d3"],
 
 Cell["\<\
 One needs to keep in mind that even if assignment is FE side, effets it has \
@@ -746,7 +1088,77 @@ know how to make boxes of a List. Otoh `{Dynamic[x[[1]]], Dynamic[x[[2]]]}` \
 does not need to go through kernel. FE can handle Part and if it is a \
 \[OpenCurlyQuote]simple\[CloseCurlyQuote] value then it can display it.
 We assume of course that x is FE owned variable (DynamicModule).\
-\>", "Text",ExpressionUUID->"00f418b5-c722-41c9-a58c-9c7c694015ee"],
+\>", "Text",ExpressionUUID->"00f418b5-c722-41c9-a58c-9c7c694015ee"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Graphics @ { DynamicBox[...], ...}", \
+"Subsection",ExpressionUUID->"22e65947-f56c-4c8d-84ae-a53582b413a9"],
+
+Cell[BoxData[
+ RowBox[{"Options", "[", 
+  RowBox[{"$FrontEnd", ",", "DynamicBoxOptions"}], "]"}]], "Input",
+ CellLabel->"In[56]:=",ExpressionUUID->"ebac4428-cb57-42a6-bdb4-1241b6b97dcf"],
+
+Cell[BoxData[
+ RowBox[{"DynamicModule", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"x", "=", "Blue"}], ",", 
+     RowBox[{"y", "=", "Blue"}]}], "}"}], ",", 
+   RowBox[{"(*", 
+    RowBox[{"run", " ", "in", " ", "link", " ", "snooper", " ", "kernel"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Button", "[", 
+         RowBox[{"\"\<test\>\"", ",", 
+          RowBox[{"FEPrivate`Set", "[", 
+           RowBox[{"x", ",", 
+            RowBox[{"LABColor", "[", 
+             RowBox[{".5", ",", ".8", ",", ".8"}], "]"}]}], "]"}], ",", 
+          RowBox[{"Evaluator", "\[Rule]", "Automatic"}]}], "]"}], ",", 
+        RowBox[{"Dynamic", "[", 
+         RowBox[{"x", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+        RowBox[{"Graphics", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Dynamic", "[", "x", "]"}], ",", 
+           RowBox[{"Disk", "[", "]"}]}], "}"}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Button", "[", 
+         RowBox[{"\"\<test\>\"", ",", 
+          RowBox[{"FEPrivate`Set", "[", 
+           RowBox[{"y", ",", 
+            RowBox[{"RGBColor", "[", 
+             RowBox[{"1", ",", "0", ",", "0"}], "]"}]}], "]"}], ",", 
+          RowBox[{"Evaluator", "\[Rule]", "Automatic"}]}], "]"}], ",", 
+        RowBox[{"Dynamic", "[", 
+         RowBox[{"y", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+        RowBox[{"Graphics", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"DynamicBox", "[", "y", "]"}], ",", 
+           RowBox[{"Disk", "[", "]"}]}], "}"}], "]"}]}], "}"}]}], 
+     "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellLabel->"In[49]:=",ExpressionUUID->"66a0356b-cb14-41fa-828c-591b483e73fd"]
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Color friendly pattern (not a good idea)", \
+"Section",ExpressionUUID->"fb42db42-d254-4884-afa9-20fc62cdba57"],
 
 Cell[BoxData[
  RowBox[{
@@ -756,8 +1168,79 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"c_", "?", "ColorQ"}], "\[RuleDelayed]", 
    RowBox[{"RuleCondition", "@", "c"}]}]}]], "Input",
- CellLabel->"In[46]:=",ExpressionUUID->"18117f90-5341-4089-ba08-2f4a24e3b986"]
-}, Open  ]],
+ CellLabel->"In[1]:=",ExpressionUUID->"18117f90-5341-4089-ba08-2f4a24e3b986"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$namedColors", " ", "=", " ", 
+    RowBox[{"Thread", "[", 
+     RowBox[{
+      RowBox[{"HoldPattern", "@", 
+       RowBox[{"Alternatives", "[", "\[IndentingNewLine]", 
+        RowBox[{
+        "Black", ",", "Blue", ",", "Brown", ",", "Cyan", ",", "Gray", ",", 
+         "Green", ",", "LightBlue", ",", "LightBrown", ",", "LightCyan", ",", 
+         "LightGray", ",", "LightGreen", ",", "LightMagenta", ",", 
+         "LightOrange", ",", "LightPink", ",", "LightPurple", ",", "LightRed",
+          ",", "LightYellow", ",", "Magenta", ",", "Orange", ",", "Pink", ",",
+          "Purple", ",", "Red", ",", "Transparent", ",", "White", ",", 
+         "Yellow"}], "\[IndentingNewLine]", "]"}]}], ",", "Alternatives"}], 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$colorModels", "=", 
+    RowBox[{
+     RowBox[{"Verbatim", "[", "\[IndentingNewLine]", 
+      RowBox[{
+      "RGBColor", "|", "Hue", "|", "CMYKColor", "|", "GrayLevel", "|", 
+       "LABColor", "|", "LCHColor", "|", "LUVColor", "|", "XYZColor"}], 
+      "\[IndentingNewLine]", "]"}], "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"_String", "|", "#", "|", 
+        RowBox[{"{", "#", "}"}]}], "&"}], "[", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"_Integer", "|", "_Real"}], ")"}], "..."}], "]"}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ColorPattern", "[", "]"}], "=", 
+  RowBox[{"Flatten", "@", 
+   RowBox[{"Alternatives", "[", "\[IndentingNewLine]", 
+    RowBox[{"$namedColors", ",", "\[IndentingNewLine]", "$colorModels"}], 
+    "\[IndentingNewLine]", 
+    "]"}]}]}]}], \
+"Input",ExpressionUUID->"c349d006-39e2-4aba-9349-52bab96c3244"],
+
+Cell[BoxData[
+ RowBox[{"Cases", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Hold", "[", 
+    RowBox[{"Red", ",", "Blue", ",", 
+     RowBox[{"RGBColor", "[", 
+      RowBox[{"1", ",", "0", ",", "0"}], "]"}], ",", 
+     RowBox[{"RGBColor", "[", 
+      RowBox[{"0", ",", "1", ",", "0", ",", ".5"}], "]"}], ",", 
+     RowBox[{"RGBColor", "[", 
+      RowBox[{"0", ",", "1", ",", "0", ",", 
+       RowBox[{"Print", "[", "1", "]"}]}], "]"}], ",", 
+     RowBox[{"Print", "[", "1", "]"}], ",", 
+     RowBox[{"Darker", "@", "Blue"}], ",", "Lighter"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"c", ":", 
+     RowBox[{"ColorPattern", "[", "]"}]}], "\[RuleDelayed]", 
+    RowBox[{"Column", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"HoldForm", "@", 
+        RowBox[{"InputForm", "[", "c", "]"}]}], ",", "c"}], "}"}], "]"}]}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"{", "1", "}"}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"02fb5c37-072d-4e7b-a1be-12524fb4c574"]
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1331,270 +1814,7 @@ Cell[BoxData[
 
 Cell[BoxData[""], \
 "Input",ExpressionUUID->"4cfa9dc7-2447-44c8-b3df-1c40742bb12f"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["FE side example (needs init values)", \
-"Section",ExpressionUUID->"fb53b4e7-0fdc-43c2-87fd-caf174d243aa"],
-
-Cell[BoxData[
- RowBox[{"Style", "[", 
-  RowBox[{
-   RowBox[{"Dynamic", "@", 
-    RowBox[{"FrontEnd`CurrentValue", "[", 
-     RowBox[{"{", 
-      RowBox[{"TaggingRules", ",", "\"\<locator\>\""}], "}"}], "]"}]}], ",", 
-   RowBox[{"TaggingRules", "\[Rule]", 
-    RowBox[{"{", 
-     RowBox[{"\"\<locator\>\"", "\[Rule]", 
-      RowBox[{"RawBoxes", "@", 
-       RowBox[{
-        RowBox[{"FrontEndResource", "[", 
-         RowBox[{
-         "\"\<FEExpressions\>\"", ",", "\"\<LocatorDefaultThumb\>\""}], "]"}],
-         "[", 
-        RowBox[{"[", 
-         RowBox[{"1", ",", "1"}], "]"}], "]"}]}]}], "}"}]}]}], "]"}]], "Input",
- CellLabel->
-  "In[138]:=",ExpressionUUID->"25e24228-4a97-4e4d-aed9-062fc63ce57f"],
-
-Cell[BoxData[
- RowBox[{"DynamicModule", "[", "\n", "  ", 
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{"i", "=", "1"}], "}"}], "\n", ",", " ", 
-   RowBox[{"DynamicObjectModule", "[", "\n", " ", 
-    RowBox[{
-     RowBox[{
-      RowBox[{
-       RowBox[{"Column", "[", 
-        RowBox[{"{", "\n", "   ", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"Animator", "[", 
-            RowBox[{
-             RowBox[{"Dynamic", "[", 
-              RowBox[{"i", ",", " ", 
-               RowBox[{
-                RowBox[{"(", 
-                 RowBox[{
-                  RowBox[{"i", "=", "#"}], ";", " ", 
-                  RowBox[{
-                   RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", " ", 
-                    RowBox[{"i", "-", "1"}]}], "]"}], "=", "False"}], ";", 
-                  RowBox[{
-                   RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", " ", "i"}], "]"}], "=", 
-                   "True"}]}], ")"}], "&"}]}], "]"}], ",", " ", 
-             RowBox[{"{", 
-              RowBox[{"1", ",", " ", "n", ",", " ", "1"}], "}"}], ",", " ", 
-             RowBox[{"AnimationRate", "\[Rule]", "15"}], ",", " ", 
-             RowBox[{"AnimationDirection", "\[Rule]", "ForwardBackward"}]}], 
-            "]"}], ";"}], "\n", "   ", "\n", " ", ",", " ", "#"}], "}"}], 
-        "\n", " ", "]"}], "&"}], " ", "@", " ", 
-      RowBox[{"Graphics", "[", "\n", "  ", 
-       RowBox[{
-        RowBox[{"{", " ", "\n", "    ", 
-         RowBox[{
-          RowBox[{
-           RowBox[{
-            RowBox[{"{", " ", 
-             RowBox[{
-              RowBox[{"RawBoxes", " ", "@", " ", 
-               RowBox[{"DynamicBox", "[", "\n", "        ", 
-                RowBox[{"FEPrivate`If", "[", "\n", "          ", 
-                 RowBox[{
-                  RowBox[{"FEPrivate`SameQ", "[", "\n", "            ", 
-                   RowBox[{
-                    RowBox[{"FEPrivate`Or", "[", " ", 
-                    RowBox[{
-                    RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", " ", 
-                    RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", " ", "#2"}], "]"}]}], "]"}],
-                     "\n", "          ", ",", " ", "True"}], "\n", 
-                   "          ", "]"}], "\n", "        ", ",", " ", 
-                  RowBox[{"RGBColor", "[", 
-                   RowBox[{"1", ",", "0", ",", "1"}], "]"}], "\n", "        ",
-                   ",", " ", 
-                  RowBox[{"RGBColor", "[", 
-                   RowBox[{
-                   "0.", " ", ",", "0.", " ", ",", "0.", " ", ",", " ", 
-                    ".1"}], "]"}]}], "\n", "        ", "\n", "        ", 
-                 "]"}], "\n", "      ", "]"}]}], "\n", "    ", ",", " ", 
-              RowBox[{"Line", "[", 
-               RowBox[{"{", 
-                RowBox[{
-                 RowBox[{"pts", "[", "#1", "]"}], ",", 
-                 RowBox[{"pts", "[", "#2", "]"}]}], "}"}], "]"}]}], "\n", 
-             "    ", "}"}], "&"}], " ", "@@@", " ", "edges"}], "\n", "  ", 
-          ",", " ", 
-          RowBox[{"PointSize", "[", "0.025", "]"}], "\n", "  ", ",", " ", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"{", " ", "\n", "      ", 
-             RowBox[{
-              RowBox[{"RawBoxes", " ", "@", " ", 
-               RowBox[{"DynamicBox", "[", 
-                RowBox[{"FEPrivate`If", "[", 
-                 RowBox[{
-                  RowBox[{"SameQ", "[", 
-                   RowBox[{
-                    RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
-                    "True"}], "]"}], ",", 
-                  RowBox[{"RGBColor", "[", 
-                   RowBox[{"1", ",", "0", ",", "1"}], "]"}], ",", 
-                  RowBox[{"RGBColor", "[", 
-                   RowBox[{"0", ",", "0", ",", "0"}], "]"}]}], "]"}], "]"}]}],
-               "\n", "    ", ",", " ", 
-              RowBox[{"EventHandler", "[", 
-               RowBox[{
-                RowBox[{"Point", "@", 
-                 RowBox[{"pts", "[", "#", "]"}]}], "\n", "      ", ",", " ", 
-                RowBox[{"{", " ", 
-                 RowBox[{
-                  RowBox[{"\"\<MouseEntered\>\"", " ", "\[RuleDelayed]", " ", 
-                   RowBox[{"FEPrivate`Set", "[", 
-                    RowBox[{
-                    RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
-                    "True"}], "]"}]}], "\n", "        ", ",", " ", 
-                  RowBox[{"\"\<MouseExited\>\"", "\[RuleDelayed]", 
-                   RowBox[{"FEPrivate`Set", "[", 
-                    RowBox[{
-                    RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
-                    "False"}], "]"}]}]}], "\n", "        ", "}"}]}], "\n", 
-               "      ", "]"}]}], "\n", "    ", "}"}], "&"}], " ", "/@", " ", 
-           "names"}]}], "\n", "  ", "}"}], "\n", ",", " ", 
-        RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "\n", "]"}]}], ",", "\n", 
-     RowBox[{"Initialization", " ", "\[RuleDelayed]", " ", 
-      RowBox[{"(", " ", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Set", "[", 
-          RowBox[{
-           RowBox[{"DynamicObject", "[", 
-            RowBox[{"\"\<state\>\"", ",", " ", "#"}], "]"}], ",", "False"}], 
-          "]"}], " ", "&"}], " ", "/@", " ", 
-        RowBox[{"Range", "[", "n", "]"}]}], ")"}]}]}], "\n", "]"}]}], "\n", 
-  "]"}]], "Code",
- CellLabel->"In[61]:=",ExpressionUUID->"f6f317d6-b672-443e-bc49-8a01f80a3b27"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"n", " ", "=", " ", "150"}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"names", " ", "=", " ", 
-   RowBox[{"Range", "[", "n", "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"pts", " ", "=", " ", 
-   RowBox[{"AssociationThread", "[", 
-    RowBox[{"names", " ", "->", " ", 
-     RowBox[{"N", "@", 
-      RowBox[{"CirclePoints", "[", "n", "]"}]}]}], "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"edges", " ", "=", " ", 
-    RowBox[{"RandomSample", "[", 
-     RowBox[{
-      RowBox[{"Subsets", "[", 
-       RowBox[{"names", ",", " ", 
-        RowBox[{"{", "2", "}"}]}], "]"}], ",", " ", "2000"}], "]"}]}], ";"}], 
-  "\n"}], "\n", 
- RowBox[{"DynamicObjectModule", "[", "\n", " ", 
-  RowBox[{
-   RowBox[{"Graphics", "[", "\n", "  ", 
-    RowBox[{
-     RowBox[{"{", " ", "\n", "    ", 
-      RowBox[{
-       RowBox[{
-        RowBox[{
-         RowBox[{"{", " ", 
-          RowBox[{
-           RowBox[{"RawBoxes", " ", "@", " ", 
-            RowBox[{"DynamicBox", "[", "\n", "        ", 
-             RowBox[{"FEPrivate`If", "[", "\n", "          ", 
-              RowBox[{
-               RowBox[{"FEPrivate`SameQ", "[", " ", 
-                RowBox[{
-                 RowBox[{"FEPrivate`Or", "[", " ", 
-                  RowBox[{
-                   RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", " ", 
-                   RowBox[{"DynamicObject", "[", 
-                    RowBox[{"\"\<state\>\"", ",", " ", "#2"}], "]"}]}], "]"}],
-                  ",", " ", "True"}], " ", "]"}], "\n", "        ", ",", " ", 
-               RowBox[{"RGBColor", "[", 
-                RowBox[{"1", ",", "0", ",", "1"}], "]"}], "\n", "        ", 
-               ",", " ", 
-               RowBox[{"RGBColor", "[", 
-                RowBox[{
-                "0.", " ", ",", "0.", " ", ",", "0.", " ", ",", " ", ".1"}], 
-                "]"}]}], "\n", "        ", "\n", "        ", "]"}], "\n", 
-             "      ", "]"}]}], "\n", "    ", ",", " ", 
-           RowBox[{"Line", "[", 
-            RowBox[{"{", 
-             RowBox[{
-              RowBox[{"pts", "[", "#1", "]"}], ",", 
-              RowBox[{"pts", "[", "#2", "]"}]}], "}"}], "]"}]}], "\n", "    ",
-           "}"}], "&"}], " ", "@@@", " ", "edges"}], "\n", "  ", ",", " ", 
-       RowBox[{"PointSize", "[", "0.015", "]"}], "\n", "  ", ",", " ", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"{", " ", "\n", "      ", 
-          RowBox[{
-           RowBox[{"RawBoxes", " ", "@", " ", 
-            RowBox[{"DynamicBox", "[", "\n", "        ", 
-             RowBox[{"FEPrivate`If", "[", " ", "\n", "          ", 
-              RowBox[{
-               RowBox[{"SameQ", "[", 
-                RowBox[{
-                 RowBox[{"DynamicObject", "[", 
-                  RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", "True"}], 
-                "]"}], "\n", "        ", ",", " ", 
-               RowBox[{"RGBColor", "[", 
-                RowBox[{"1", ",", "0", ",", "1"}], "]"}], "\n", "        ", 
-               ",", " ", 
-               RowBox[{"RGBColor", "[", 
-                RowBox[{"0", ",", "0", ",", "0"}], "]"}]}], "\n", "        ", 
-              "]"}], "\n", "      ", "]"}]}], "\n", "    ", ",", " ", 
-           RowBox[{"EventHandler", "[", 
-            RowBox[{
-             RowBox[{"Point", "@", 
-              RowBox[{"pts", "[", "#", "]"}]}], "\n", "      ", ",", " ", 
-             RowBox[{"{", " ", 
-              RowBox[{
-               RowBox[{"\"\<MouseEntered\>\"", " ", ":>", " ", 
-                RowBox[{"FEPrivate`Set", "[", 
-                 RowBox[{
-                  RowBox[{"DynamicObject", "[", 
-                   RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", "True"}],
-                  "]"}]}], "\n", "        ", ",", " ", 
-               RowBox[{"\"\<MouseExited\>\"", ":>", 
-                RowBox[{"FEPrivate`Set", "[", 
-                 RowBox[{
-                  RowBox[{"DynamicObject", "[", 
-                   RowBox[{"\"\<state\>\"", ",", "#1"}], "]"}], ",", 
-                  "False"}], "]"}]}]}], "\n", "        ", "}"}]}], "\n", 
-            "      ", "]"}]}], "\n", "    ", "}"}], "&"}], " ", "/@", " ", 
-        "names"}]}], "\n", "  ", "}"}], "\n", ",", " ", 
-     RowBox[{"ImageSize", "\[Rule]", "Medium"}]}], "\n", "]"}], ",", "\n", 
-   RowBox[{"Initialization", " ", ":>", " ", 
-    RowBox[{"(", " ", 
-     RowBox[{
-      RowBox[{
-       RowBox[{"Set", "[", 
-        RowBox[{
-         RowBox[{"DynamicObject", "[", 
-          RowBox[{"\"\<state\>\"", ",", " ", "#"}], "]"}], ",", "False"}], 
-        "]"}], " ", "&"}], " ", "/@", " ", 
-      RowBox[{"Range", "[", "n", "]"}]}], ")"}]}]}], "\n", "]"}]}], "Input",
- CellLabel->"In[84]:=",ExpressionUUID->"b85cea08-6196-46df-b197-bde5905db214"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1666,6 +1886,13 @@ Cell[CellGroupData[{
 Cell["minesweeper", \
 "Section",ExpressionUUID->"5321755e-3e6c-44a2-bd92-4a2ce03448e7"],
 
+Cell[BoxData[
+ TemplateBox[{
+  "\"https://mathematica.stackexchange.com/q/66133/5478\"",
+   "https://mathematica.stackexchange.com/q/66133/5478"},
+  "HyperlinkURL"]], \
+"Input",ExpressionUUID->"64c7d51d-fcbb-4cde-a62a-4be7e87772f4"],
+
 Cell[BoxData[{
  RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], "\n", 
  RowBox[{
@@ -1711,7 +1938,7 @@ Cell[BoxData[{
        RowBox[{"filenames2", "[", 
         RowBox[{"[", 
          RowBox[{"n", "+", "1"}], "]"}], "]"}]}], "]"}]}]}], ";"}], 
-  "\n"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\n", 
  RowBox[{
   RowBox[{"backgroundcolor", "=", 
    RowBox[{"RGBColor", "[", 
@@ -1740,8 +1967,8 @@ Cell[BoxData[{
       RowBox[{"{", 
        RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
       RowBox[{"{", 
-       RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}]}]}], ";"}]}], "Input",
- CellLabel->"In[40]:=",ExpressionUUID->"4751ccdc-c12c-4bb5-a784-ac4870f177ca"],
+       RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}]}]}], 
+  ";"}]}], "Input",ExpressionUUID->"d13f486d-0513-4cb3-93d7-c60ec4f08802"],
 
 Cell[BoxData[{
  RowBox[{
@@ -1751,7 +1978,7 @@ Cell[BoxData[{
    RowBox[{
     RowBox[{"back", "[", 
      RowBox[{"i", ",", "j"}], "]"}], "=", 
-    RowBox[{"With", "[", 
+    RowBox[{"With", "[", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"{", 
        RowBox[{
@@ -1765,6 +1992,7 @@ Cell[BoxData[{
           RowBox[{"j", ",", 
            RowBox[{"{", 
             RowBox[{"1", ",", "30"}], "}"}]}], "]"}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
       RowBox[{"Image", "[", 
        RowBox[{
         RowBox[{
@@ -1778,7 +2006,8 @@ Cell[BoxData[{
          RowBox[{
           RowBox[{"(", 
            RowBox[{"ii", "+", "jj"}], ")"}], "/", "2"}], " ", 
-         "bottomright"}]}], "]"}]}], "]"}]}]}], ";"}], "\n", 
+         "bottomright"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+  ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -1789,124 +2018,141 @@ Cell[BoxData[{
      RowBox[{"block", "[", 
       RowBox[{"i", ",", "j", ",", "type1", ",", "type2"}], "]"}], "=", 
      RowBox[{"Switch", "[", 
-      RowBox[{"type1", ",", "0", ",", 
+      RowBox[{"type1", ",", "\[IndentingNewLine]", "0", ",", 
        RowBox[{"back", "[", 
-        RowBox[{"i", ",", "j"}], "]"}], ",", "1", ",", 
+        RowBox[{"i", ",", "j"}], "]"}], ",", "\[IndentingNewLine]", "1", ",", 
        RowBox[{"Switch", "[", 
-        RowBox[{"type2", ",", 
+        RowBox[{"type2", ",", "\[IndentingNewLine]", 
          RowBox[{
          "0", "|", "1", "|", "2", "|", "3", "|", "4", "|", "5", "|", "6", "|",
            "7", "|", "8"}], ",", 
-         RowBox[{"numberpictures", "[", "type2", "]"}], ",", "9", ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"RawBoxes", "@", 
+            RowBox[{"DynamicBox", "[", 
+             RowBox[{
+              RowBox[{"CurrentValue", "[", 
+               RowBox[{"{", 
+                RowBox[{
+                "TaggingRules", ",", "\"\<numberpictures\>\"", ",", "#"}], 
+                "}"}], "]"}], ",", 
+              RowBox[{"SynchronousUpdating", "\[Rule]", "False"}]}], "]"}]}], 
+           "&"}], "@", 
+          RowBox[{"ToString", "[", "type2", "]"}]}], 
+         RowBox[{"(*", 
+          RowBox[{"numberpictures", "[", "type2", "]"}], "*)"}], ",", 
+         "\[IndentingNewLine]", "9", ",", 
          RowBox[{"ImageCompose", "[", 
           RowBox[{
            RowBox[{"back", "[", 
-            RowBox[{"i", ",", "j"}], "]"}], ",", "mine"}], "]"}]}], "]"}]}], 
-      "]"}]}]}], ";"}], "\[IndentingNewLine]"}], "\n", 
+            RowBox[{"i", ",", "j"}], "]"}], ",", "mine"}], "]"}]}], 
+        "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+   ";"}], "\n"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"ini", ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"mat1", ",", "mat2", ",", "modify"}], "}"}], ",", 
+  RowBox[{
+   RowBox[{"ini", ":=", 
+    RowBox[{"Module", "[", 
      RowBox[{
+      RowBox[{"{", 
+       RowBox[{"mat1", ",", "mat2", ",", "modify"}], "}"}], ",", 
       RowBox[{
-       RowBox[{"modify", "[", 
-        RowBox[{"mat_", ",", 
-         RowBox[{"{", 
-          RowBox[{"i_", ",", "j_"}], "}"}]}], "]"}], ":=", 
-       RowBox[{"If", "[", 
-        RowBox[{
+       RowBox[{
+        RowBox[{"modify", "[", 
+         RowBox[{"mat_", ",", 
+          RowBox[{"{", 
+           RowBox[{"i_", ",", "j_"}], "}"}]}], "]"}], ":=", 
+        RowBox[{"If", "[", 
          RowBox[{
-          RowBox[{"mat", "[", 
-           RowBox[{"[", 
-            RowBox[{"i", ",", "j"}], "]"}], "]"}], "\[NotEqual]", "9"}], ",", 
-         RowBox[{"ReplacePart", "[", 
-          RowBox[{"mat", ",", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"i", ",", "j"}], "}"}], "\[Rule]", 
-            RowBox[{"Count", "[", 
-             RowBox[{
-              RowBox[{"mat", "[", 
-               RowBox[{"[", 
-                RowBox[{
-                 RowBox[{
-                  RowBox[{"Max", "[", 
-                   RowBox[{"1", ",", 
-                    RowBox[{"i", "-", "1"}]}], "]"}], ";;", 
-                  RowBox[{"Min", "[", 
-                   RowBox[{"16", ",", 
-                    RowBox[{"i", "+", "1"}]}], "]"}]}], ",", 
-                 RowBox[{
-                  RowBox[{"Max", "[", 
-                   RowBox[{"1", ",", 
-                    RowBox[{"j", "-", "1"}]}], "]"}], ";;", 
-                  RowBox[{"Min", "[", 
-                   RowBox[{"30", ",", 
-                    RowBox[{"j", "+", "1"}]}], "]"}]}]}], "]"}], "]"}], ",", 
-              "9", ",", "2"}], "]"}]}]}], "]"}], ",", "mat"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"mat1", "=", 
-       RowBox[{"Table", "[", 
-        RowBox[{
-         RowBox[{"{", 
-          RowBox[{"i", ",", "j", ",", "0"}], "}"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"i", ",", "16"}], "}"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"j", ",", "30"}], "}"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"mat2", "=", 
-       RowBox[{"Partition", "[", 
-        RowBox[{
-         RowBox[{"RandomSample", "[", 
-          RowBox[{"Flatten", "@", 
-           RowBox[{"{", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"9", "&"}], "/@", 
-              RowBox[{"Range", "[", "99", "]"}]}], ",", 
-             RowBox[{
-              RowBox[{"0", "&"}], "/@", 
-              RowBox[{"Range", "[", 
-               RowBox[{
-                RowBox[{"16", "*", "30"}], "-", "99"}], "]"}]}]}], "}"}]}], 
-          "]"}], ",", "30"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"mat2", "=", 
-       RowBox[{"Map", "[", 
-        RowBox[{"List", ",", 
-         RowBox[{"Fold", "[", 
           RowBox[{
-           RowBox[{
-            RowBox[{"modify", "[", 
-             RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", "mat2", ",", 
-           RowBox[{"Flatten", "[", 
+           RowBox[{"mat", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", "j"}], "]"}], "]"}], "\[NotEqual]", "9"}], ",", 
+          RowBox[{"ReplacePart", "[", 
+           RowBox[{"mat", ",", 
             RowBox[{
-             RowBox[{"Array", "[", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "j"}], "}"}], "\[Rule]", 
+             RowBox[{"Count", "[", 
               RowBox[{
+               RowBox[{"mat", "[", 
+                RowBox[{"[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Max", "[", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"i", "-", "1"}]}], "]"}], ";;", 
+                   RowBox[{"Min", "[", 
+                    RowBox[{"16", ",", 
+                    RowBox[{"i", "+", "1"}]}], "]"}]}], ",", 
+                  RowBox[{
+                   RowBox[{"Max", "[", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"j", "-", "1"}]}], "]"}], ";;", 
+                   RowBox[{"Min", "[", 
+                    RowBox[{"30", ",", 
+                    RowBox[{"j", "+", "1"}]}], "]"}]}]}], "]"}], "]"}], ",", 
+               "9", ",", "2"}], "]"}]}]}], "]"}], ",", "mat"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"mat1", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"i", ",", "j", ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "16"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"j", ",", "30"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"mat2", "=", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"RandomSample", "[", 
+           RowBox[{"Flatten", "@", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"9", "&"}], "/@", 
+               RowBox[{"Range", "[", "99", "]"}]}], ",", 
+              RowBox[{
+               RowBox[{"0", "&"}], "/@", 
+               RowBox[{"Range", "[", 
+                RowBox[{
+                 RowBox[{"16", "*", "30"}], "-", "99"}], "]"}]}]}], "}"}]}], 
+           "]"}], ",", "30"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"mat2", "=", 
+        RowBox[{"Map", "[", 
+         RowBox[{"List", ",", 
+          RowBox[{"Fold", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"modify", "[", 
+              RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", "mat2", ",", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{
+              RowBox[{"Array", "[", 
                RowBox[{
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"#1", ",", "#2"}], "}"}], "&"}], ",", 
                 RowBox[{"{", 
-                 RowBox[{"#1", ",", "#2"}], "}"}], "&"}], ",", 
-               RowBox[{"{", 
-                RowBox[{"16", ",", "30"}], "}"}]}], "]"}], ",", "1"}], 
-            "]"}]}], "]"}], ",", 
-         RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Join", "[", 
-       RowBox[{"mat1", ",", "mat2", ",", "3"}], "]"}]}]}], "]"}]}], 
-  ";"}], "\n", 
+                 RowBox[{"16", ",", "30"}], "}"}]}], "]"}], ",", "1"}], 
+             "]"}]}], "]"}], ",", 
+          RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Join", "[", 
+        RowBox[{"mat1", ",", "mat2", ",", "3"}], "]"}]}]}], "]"}]}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
  RowBox[{"CreateDialog", "[", 
   RowBox[{
    RowBox[{"DynamicModule", "[", 
     RowBox[{
      RowBox[{"{", 
-      RowBox[{"board", "=", "ini"}], "}"}], ",", 
+      RowBox[{"board", "=", "ini"}], "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{"Dynamic", "@", 
       RowBox[{"Column", "@", 
-       RowBox[{"{", 
+       RowBox[{"{", "\[IndentingNewLine]", 
         RowBox[{
-         RowBox[{"Spacer", "[", "30", "]"}], ",", 
-         RowBox[{"GraphicsGrid", "[", 
+         RowBox[{"Spacer", "[", "30", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"GraphicsGrid", "[", "\[IndentingNewLine]", 
           RowBox[{
            RowBox[{"Map", "[", 
             RowBox[{"block", ",", "board", ",", 
@@ -1924,10 +2170,10 @@ Cell[BoxData[{
            RowBox[{
             RowBox[{"Spacer", "[", "60", "]"}], ",", "clock", ",", 
             RowBox[{"Spacer", "[", "700", "]"}], ",", "mine", ",", 
-            RowBox[{"Spacer", "[", "30", "]"}]}], "}"}], "]"}]}], "}"}]}]}], 
-     ",", 
+            RowBox[{"Spacer", "[", "30", "]"}]}], "}"}], "]"}]}], 
+        "\[IndentingNewLine]", "}"}]}]}], ",", "\[IndentingNewLine]", 
      RowBox[{"Initialization", "\[RuleDelayed]", 
-      RowBox[{"(", 
+      RowBox[{"(", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{
          RowBox[{"getpos", "[", "]"}], ":=", 
@@ -1950,7 +2196,7 @@ Cell[BoxData[{
                  RowBox[{"Reverse", "@", "pos"}], ",", "360"}], "]"}]}], "+", 
               RowBox[{"{", 
                RowBox[{"0", ",", "1"}], "}"}]}]}], "]"}]}], "]"}]}], ";", 
-        "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
         RowBox[{
          RowBox[{"click", "[", 
           RowBox[{"board_", ",", "\"\<Left\>\""}], "]"}], ":=", 
@@ -1969,7 +2215,7 @@ Cell[BoxData[{
                  RowBox[{"{", 
                   RowBox[{"coor", ",", "3"}], "}"}], "]"}], "\[Rule]", 
                 "1"}]}], "]"}]}], "]"}]}], "]"}]}], ";", 
-        "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
         RowBox[{"SetOptions", "[", 
          RowBox[{
           RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
@@ -1991,26 +2237,73 @@ Cell[BoxData[{
                RowBox[{"\"\<Right \>\"", ",", 
                 RowBox[{"Print", "@", 
                  RowBox[{"getpos", "[", "]"}]}]}], "}"}]}]}], "}"}]}]}], 
-         "]"}]}], ")"}]}]}], "]"}], ",", 
+         "]"}]}], "\[IndentingNewLine]", ")"}]}]}], "\[IndentingNewLine]", 
+    "]"}], ",", "\[IndentingNewLine]", 
    RowBox[{"Background", "\[Rule]", "backgroundcolor"}], ",", 
+   "\[IndentingNewLine]", 
    RowBox[{"WindowTitle", "\[Rule]", "\"\<Minesweeper By apple\>\""}], ",", 
+   "\[IndentingNewLine]", 
    RowBox[{"WindowMargins", "\[Rule]", 
     RowBox[{"{", 
      RowBox[{
       RowBox[{"{", 
        RowBox[{"0", ",", "Automatic"}], "}"}], ",", 
       RowBox[{"{", 
-       RowBox[{"Automatic", ",", "0"}], "}"}]}], "}"}]}]}], "]"}]}], "Input",
- CellLabel->"In[50]:=",ExpressionUUID->"5b2bfd76-a124-4ebb-8248-9296b7c31084"]
+       RowBox[{"Automatic", ",", "0"}], "}"}]}], "}"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TaggingRules", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\"\<numberpictures\>\"", "\[Rule]", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"ToString", "[", "#", "]"}], "\[Rule]", 
+          RowBox[{"ToBoxes", "@", 
+           RowBox[{"numberpictures", "[", "#", "]"}]}]}], "&"}], "/@", 
+        RowBox[{"Range", "[", 
+         RowBox[{"0", ",", "8"}], "]"}]}], ")"}]}], "}"}]}]}], 
+  "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->"In[52]:=",ExpressionUUID->"1226ce3e-b15e-487e-92f0-b18a09fd5871"],
+
+Cell[BoxData[
+ RowBox[{"numberpictures", "[", "1", "]"}]], "Input",
+ CellLabel->
+  "In[101]:=",ExpressionUUID->"d93e937a-7fe6-4347-b865-ce11e5cd58d6"],
+
+Cell[BoxData["board"], "Input",
+ CellLabel->"In[17]:=",ExpressionUUID->"c6fdaa16-82ab-49bc-973f-73b7499f06d6"],
+
+Cell[BoxData["ini"], "Input",
+ CellLabel->"In[18]:=",ExpressionUUID->"ce3b8a9e-bb5e-4dbd-9b9b-2472c362bc72"],
+
+Cell[BoxData[
+ RowBox[{"Style", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"RawBoxes", "@", 
+    RowBox[{"DynamicBox", "[", 
+     RowBox[{"CurrentValue", "[", 
+      RowBox[{"{", 
+       RowBox[{
+       "TaggingRules", ",", "\"\<numberpictures\>\"", ",", "\"\<1\>\""}], 
+       "}"}], "]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"TaggingRules", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\"\<numberpictures\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<1\>\"", "\[Rule]", 
+        RowBox[{"ToBoxes", "@", 
+         RowBox[{"numberpictures", "[", "1", "]"}]}]}], "}"}]}], "}"}]}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->"In[44]:=",ExpressionUUID->"c1572b01-d442-447b-ac15-a86345c3edde"]
 }, Open  ]]
 }, Open  ]]
 },
-Evaluator->"LinkSnooper",
-WindowSize->{861, 1022},
-WindowMargins->{{62, Automatic}, {Automatic, 0}},
+WindowSize->{1790, 1022},
+WindowMargins->{{Automatic, 527}, {176, Automatic}},
 PrivateNotebookOptions->{"FileOutlineCache"->False},
 TrackCellChangeTimes->False,
-Magnification:>1.2 Inherited,
+Magnification:>1.3 Inherited,
 FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
 StyleDefinitions->"Default.nb"
 ]
