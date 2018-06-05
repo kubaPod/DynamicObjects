@@ -29,23 +29,12 @@
 
 
   (*TODO:
-  
-     + investigate: "state$108$$","state$109" removal maybe?
-         OK, symbols created on DM lifecycle:
-             DynObjDump`state$i      // Parsed version  \[Rule] Remove @ DynObjDump`*
-             DynObjDump`state$i$nn   // Module \[Rule] Temp \[Rule] no problem
-             DynObjDump`state$i$$    // Typeset version \[Rule] Remove @ DynObjDump`*
-          FE`DynObjDump`state$i$$dmn // Initialized FE variable \[Rule] Remove @ FE`DynObjDump`*$$dmn
-     
+
      - feature: FrontEndModule with InheritScope \[Rule] DynamicModuleNumber[] for dynamic content generation\
      - feature: the above needs to generate parent DynamicModule with ranges exeeding those found in the body
-     
-     + improvment: Deinitialization should remove underlying symbols. (partialy done)
-     
-     + improvment: FrontEndSymbol setters should 'take' module number from a variable so it can be Blocked e.g. for asynchronous calls. It will help when setters are used multiple times during one evaluation
-     
-     - feature: Initial values for obj, probably one value threaded over symbols, for simplicty first.
-     
+
+     - minor feature: DeepEvaluate
+
      - feature: Assuming notebook context is set, one may want to not create scoped versions of those symbols, in cases where the total number is not known
        up front or the number is too big to matter but it is certain that on runtime only few will be accessed.
      
@@ -53,13 +42,10 @@
      
      - improvment: More extensive FrontEndSymbol setters. Support for ranges etc.
      
-     - feature: Support for multidimensional FrontEndSymbol?
-     
+
      - feature: utility function to convert _Dynamic to fe side version with FEPrivate` equivalents.
      
      - option: light locator env
-     
-     - option: replace colors
      
      - option: try to create fe side Dynamics
    *)
