@@ -44,17 +44,17 @@ DynamicModule[{}
 Using this package it is way more handy, additionally it scopes all generated symbols unlike the code above (that would make it even worse):
 
 ```Mathematica
-DynamicObjectModule[ 
+FrontEndModule[ 
   Graphics[
     { 
       { 
-        Dynamic @ If[ TrueQ[ DynamicObject["state",#1] || DynamicObject["state", #2] ], Red, Black]
+        Dynamic @ If[ TrueQ[ FrontEndSymbol["state",#1] || FrontEndSymbol["state", #2] ], Red, Black]
       , Line[{pts[#1],pts[#2]}]
       }& @@@ edges    
     , {
         AbsolutePointSize@7
-      , Dynamic @ If[ TrueQ[DynamicObject["state",#1]], Red, Black]
-      , EventHandler[Point@pts[#],{"MouseEntered":>(DynamicObject["state",#1]=True),"MouseExited":>(DynamicObject["state",#1]=False)}]
+      , Dynamic @ If[ TrueQ[FrontEndSymbol["state",#1]], Red, Black]
+      , EventHandler[Point@pts[#],{"MouseEntered":>(FrontEndSymbol["state",#1]=True),"MouseExited":>(FrontEndSymbol["state",#1]=False)}]
       }& /@ names
     }
   , ImageSize -> Medium
@@ -74,12 +74,12 @@ names = Range[n];
 pts = AssociationThread[names -> N@CirclePoints[n]];
 edges = RandomSample[Subsets[names, {2}], 2000];
 
-DynamicObjectModule[
+FrontEndModule[
  Graphics[
   { 
     { RawBoxes @ DynamicBox[
         FEPrivate`If[
-          FEPrivate`SameQ[ FEPrivate`Or[ DynamicObject["state",#1], DynamicObject["state", #2]], True ]
+          FEPrivate`SameQ[ FEPrivate`Or[ FrontEndSymbol["state",#1], FrontEndSymbol["state", #2]], True ]
         , RGBColor[1,0,1]
         , RGBColor[0. ,0. ,0. , .1]
         
@@ -91,21 +91,21 @@ DynamicObjectModule[
   , { 
       RawBoxes @ DynamicBox[
         FEPrivate`If[ 
-          SameQ[DynamicObject["state",#1],True]
+          SameQ[FrontEndSymbol["state",#1],True]
         , RGBColor[1,0,1]
         , RGBColor[0,0,0]
         ]
       ]
     , EventHandler[Point@pts[#]
-      , { "MouseEntered" :> FEPrivate`Set[DynamicObject["state",#1],True]
-        , "MouseExited":>FEPrivate`Set[DynamicObject["state",#1],False]
+      , { "MouseEntered" :> FEPrivate`Set[FrontEndSymbol["state",#1],True]
+        , "MouseExited":>FEPrivate`Set[FrontEndSymbol["state",#1],False]
         }
       ]
     }& /@ names
   }
 , ImageSize->Large
 ],
-Initialization :> ( Set[DynamicObject["state", #],False] & /@ Range[n])
+Initialization :> ( Set[FrontEndSymbol["state", #],False] & /@ Range[n])
 ]
 ```
 

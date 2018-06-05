@@ -9,7 +9,7 @@
 (* :Title: DynamicObjects *)
 (* :Context: DynamicObjects` *)
 (* :Author: Kuba Podkalicki (kuba.pod@gmail.com) *)
-(* :Date: Tue 29 May 2018 23:56:43 *)
+(* :Date: Tue 29 May 2018 *)
 
 (* :Keywords: *)
 (* :Discussion: *)
@@ -23,7 +23,7 @@
 	      - custom typesetting for Obj will not help because stuff from Dynamic/ButtonFunction etc is not typeset	    
 	      - so we need to create a 'lexical' environment which will replace _Obj with appropriate_Symbol , keep in mind we have to avoid evaluation etc
 	      
-	    - we need to add getters/setters which will pass values to DynamicModule variables via DynamicObject
+	    - we need to add getters/setters which will pass values to DynamicModule variables via FrontEndSymbol
 	
 	*)
 
@@ -37,23 +37,23 @@
              DynObjDump`state$i$$    // Typeset version \[Rule] Remove @ DynObjDump`*
           FE`DynObjDump`state$i$$dmn // Initialized FE variable \[Rule] Remove @ FE`DynObjDump`*$$dmn
      
-     - feature: DynamicObjectModule with InheritScope \[Rule] DynamicModuleNumber[] for dynamic content generation\
+     - feature: FrontEndModule with InheritScope \[Rule] DynamicModuleNumber[] for dynamic content generation\
      - feature: the above needs to generate parent DynamicModule with ranges exeeding those found in the body
      
      + improvment: Deinitialization should remove underlying symbols. (partialy done)
      
-     + improvment: DynamicObject setters should 'take' module number from a variable so it can be Blocked e.g. for asynchronous calls. It will help when setters are used multiple times during one evaluation
+     + improvment: FrontEndSymbol setters should 'take' module number from a variable so it can be Blocked e.g. for asynchronous calls. It will help when setters are used multiple times during one evaluation
      
      - feature: Initial values for obj, probably one value threaded over symbols, for simplicty first.
      
      - feature: Assuming notebook context is set, one may want to not create scoped versions of those symbols, in cases where the total number is not known
        up front or the number is too big to matter but it is certain that on runtime only few will be accessed.
      
-     - improvment: Pass DynamicModuleOptions via DynamicObjectModule
+     - improvment: Pass DynamicModuleOptions via FrontEndModule
      
-     - improvment: More extensive DynamicObject setters. Support for ranges etc.
+     - improvment: More extensive FrontEndSymbol setters. Support for ranges etc.
      
-     - feature: Support for multidimensional DynamicObject? 
+     - feature: Support for multidimensional FrontEndSymbol?
      
      - feature: utility function to convert _Dynamic to fe side version with FEPrivate` equivalents.
      
@@ -83,8 +83,8 @@ BeginPackage["DynamicObjects`"];
   DynamicModuleNumber::usage = "DynamicModuleNumber[] tries to determine the number based on the environment. Use $DynamicModuleNumber unlees you need this one";
   
   
-  DynamicObjectModule;
-  DynamicObject;
+  FrontEndModule;
+  FrontEndSymbol;
 
 Begin["`Private`"];
 
@@ -130,7 +130,7 @@ DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
 
 
 (* ::Section:: *)
-(*DynamicObjectModule*)
+(*FrontEndModule*)
 
 
 (*$objSymbolTemplate = TemplateWith[
@@ -158,28 +158,28 @@ ObjectFrontEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_
 ];
 
 
-DynamicObjectModule // Options = Options @ DynamicModule;
+FrontEndModule // Options = Options @ DynamicModule;
 
 
-DynamicObjectModule[expr_, patt: OptionsPattern[]]:=Module[
+FrontEndModule[expr_, patt: OptionsPattern[]]:=Module[
   {wrap, objs}
 , SetAttributes[wrap, HoldAll]
 
-; objs = Join @@ (Union @ Cases[expr, DynamicObject[name_String, spec:(_String|_Integer)..] :> ToExpression[ObjectSymbolString[name, spec], StandardForm, Hold], \[Infinity]])
+; objs = Join @@ (Union @ Cases[expr, FrontEndSymbol[name_String, spec:(_String|_Integer)..] :> ToExpression[ObjectSymbolString[name, spec], StandardForm, Hold], \[Infinity]])
 
-; DynamicObjectModule @@ (
+; FrontEndModule @@ (
     {
       objs (* Hold[sym1, sym2, ...] *)
     , expr (*body with DynamicObjects inside*)
     , patt (*options*)
     } /. 
-      DynamicObject[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[ObjectSymbolString[name, spec], StandardForm, wrap] /. 
+      FrontEndSymbol[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[ObjectSymbolString[name, spec], StandardForm, wrap] /.
         wrap[x_] :> x 
   )
 ];
 
 
-DynamicObjectModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicModule[
+FrontEndModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicModule[
   {sym}
 , expr
 
@@ -200,13 +200,13 @@ DynamicObjectModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicMod
 
 
 (* ::Section:: *)
-(*DynamicObject setter*)
+(*FrontEndSymbol setter*)
 
 
 (*TODO: can this be cached per $DynamicModuleNumber? *)
 
 
-DynamicObject /: Set[DynamicObject[name_?StringQ, spec: (_?IntegerQ|_?StringQ)..], val_]:= Catch @ ToExpression[
+FrontEndSymbol /: Set[FrontEndSymbol[name_?StringQ, spec: (_?IntegerQ|_?StringQ)..], val_]:= Catch @ ToExpression[
   ObjectFrontEndSymbolString[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
 , StandardForm
 , Function[symbol, symbol = val, HoldAll] 
