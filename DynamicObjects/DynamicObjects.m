@@ -66,7 +66,7 @@ BeginPackage["DynamicObjects`"];
     "By default $DynamicModuleNumber:=DynamicModuleNumber[] but you can use it to block/inject the number e.g. when scheduling async tasks where DynamicModuleNumber[] would be out of luck."<>
     "It is better to use it in your functions in case someone will need to do something fancy with injected number.";
     
-  DynamicModuleNumber::usage = "DynamicModuleNumber[] tries to determine the number based on the environment. Use $DynamicModuleNumber unlees you need this one";
+  DynamicModuleNumber::usage = "DynamicModuleNumber[] tries to determine the number based on the environment. Use $DynamicModuleNumber unless you need this one";
 
   FrontEndModule;
   FrontEndSymbol;
@@ -119,13 +119,13 @@ DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
 
 
 
-FronEndSymbolString[name_String, spec:(_String|_Integer)..]:= StringRiffle[
+FrontEndSymbolName[name_String, spec:(_String|_Integer)..]:= StringRiffle[
   {name, spec}
 , {"DynObjDump`", "$", "$$"}
 ];
 
 
-ParsedFronEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringRiffle[
+FrontEndSymbolParsedName[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringRiffle[
   {name, spec}
 , {"FE`DynObjDump`", "$", "$$" <> ToString @ dynModNumber}
 ];
@@ -138,7 +138,7 @@ FrontEndModule[expr_, patt: OptionsPattern[]]:=Module[
   {wrap, objs}
 , SetAttributes[wrap, HoldAll]
 
-; objs = Join @@ (Union @ Cases[expr, FrontEndSymbol[name_String, spec:(_String|_Integer)..] :> ToExpression[FronEndSymbolString[name, spec], StandardForm, Hold], \[Infinity]])
+; objs = Join @@ (Union @ Cases[expr, FrontEndSymbol[name_String, spec:(_String|_Integer)..] :> ToExpression[FrontEndSymbolName[name, spec], StandardForm, Hold], \[Infinity]])
 
 ; FrontEndModule @@ (
     {
@@ -146,7 +146,7 @@ FrontEndModule[expr_, patt: OptionsPattern[]]:=Module[
     , expr (*body with DynamicObjects inside*)
     , patt (*options*)
     } /. 
-      FrontEndSymbol[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[FronEndSymbolString[name, spec], StandardForm, wrap] /.
+      FrontEndSymbol[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[FrontEndSymbolName[name, spec], StandardForm, wrap] /.
         wrap[x_] :> x 
   )
 ];
@@ -180,7 +180,7 @@ FrontEndModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicModule[
 
 
 FrontEndSymbol /: Set[FrontEndSymbol[name_?StringQ, spec: (_?IntegerQ|_?StringQ)..], val_]:= Catch @ ToExpression[
-  ParsedFronEndSymbolString[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
+  FrontEndSymbolParsedName[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
 , StandardForm
 , Function[symbol, symbol = val, HoldAll] 
 ]
