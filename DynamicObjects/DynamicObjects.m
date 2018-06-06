@@ -67,8 +67,7 @@ BeginPackage["DynamicObjects`"];
     "It is better to use it in your functions in case someone will need to do something fancy with injected number.";
     
   DynamicModuleNumber::usage = "DynamicModuleNumber[] tries to determine the number based on the environment. Use $DynamicModuleNumber unlees you need this one";
-  
-  
+
   FrontEndModule;
   FrontEndSymbol;
 
@@ -119,26 +118,14 @@ DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
 (*FrontEndModule*)
 
 
-(*$objSymbolTemplate = TemplateWith[
-  {"context" \[Rule] "DynObjDump`"
-  ,"symbolName" \[Rule] StringTemplate["`1`$`2`$$"]}
-, StringTemplate["`context``symbolName`"]
-];                 (* DynObjDump`name$index$$ *)
-$objFESymbolTemplate = TemplateWith[
-  { "context1" \[Rule] "FE`"
-  , "context2" \[Rule] "DynObjDump`"
-  , "symbolName" \[Rule] StringTemplate["`1`$`2`$$`3`"]}
-, StringTemplate["`context1``context2``symbolName`"]
-]
-StringTemplate["FE<*\"`\"*>DynObjDump<*\"`\"*>``$``$$``"];  (* FE`DynObjDump`name$index$$dynamicModuleNumber *)*)
 
-
-ObjectSymbolString[name_String, spec:(_String|_Integer)..]:= StringRiffle[
+FronEndSymbolString[name_String, spec:(_String|_Integer)..]:= StringRiffle[
   {name, spec}
-, {"DynObjDump`", "$", "$$"}];
+, {"DynObjDump`", "$", "$$"}
+];
 
 
-ObjectFrontEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringRiffle[
+ParsedFronEndSymbolString[name_String, spec:(_String|_Integer).., dynModNumber_Integer]:=StringRiffle[
   {name, spec}
 , {"FE`DynObjDump`", "$", "$$" <> ToString @ dynModNumber}
 ];
@@ -151,7 +138,7 @@ FrontEndModule[expr_, patt: OptionsPattern[]]:=Module[
   {wrap, objs}
 , SetAttributes[wrap, HoldAll]
 
-; objs = Join @@ (Union @ Cases[expr, FrontEndSymbol[name_String, spec:(_String|_Integer)..] :> ToExpression[ObjectSymbolString[name, spec], StandardForm, Hold], \[Infinity]])
+; objs = Join @@ (Union @ Cases[expr, FrontEndSymbol[name_String, spec:(_String|_Integer)..] :> ToExpression[FronEndSymbolString[name, spec], StandardForm, Hold], \[Infinity]])
 
 ; FrontEndModule @@ (
     {
@@ -159,7 +146,7 @@ FrontEndModule[expr_, patt: OptionsPattern[]]:=Module[
     , expr (*body with DynamicObjects inside*)
     , patt (*options*)
     } /. 
-      FrontEndSymbol[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[ObjectSymbolString[name, spec], StandardForm, wrap] /.
+      FrontEndSymbol[name_String, spec:(_String|_Integer)..]:>RuleCondition@ToExpression[FronEndSymbolString[name, spec], StandardForm, wrap] /.
         wrap[x_] :> x 
   )
 ];
@@ -193,7 +180,7 @@ FrontEndModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicModule[
 
 
 FrontEndSymbol /: Set[FrontEndSymbol[name_?StringQ, spec: (_?IntegerQ|_?StringQ)..], val_]:= Catch @ ToExpression[
-  ObjectFrontEndSymbolString[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
+  ParsedFronEndSymbolString[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
 , StandardForm
 , Function[symbol, symbol = val, HoldAll] 
 ]
