@@ -104,7 +104,7 @@ edges = RandomSample[Subsets[names, {2}], 2000];
 FrontEndModule[
  Graphics[
   { 
-    { RawBoxes @ DynamicBox[
+    { DynamicBox[
         FEPrivate`If[
           FEPrivate`SameQ[ FEPrivate`Or[ FrontEndSymbol["state",#1], FrontEndSymbol["state", #2]], True ]
         , RGBColor[1,0,1]
@@ -116,7 +116,7 @@ FrontEndModule[
     }& @@@ edges
   , PointSize[0.025]
   , { 
-      RawBoxes @ DynamicBox[
+      DynamicBox[
         FEPrivate`If[ 
           SameQ[FrontEndSymbol["state",#1],True]
         , RGBColor[1,0,1]
