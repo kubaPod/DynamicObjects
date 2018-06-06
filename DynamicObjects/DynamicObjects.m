@@ -89,8 +89,8 @@ Begin["`Private`"];
 $DynamicModuleNumber := DynamicModuleNumber[];
 
 
-DynamicModuleNumber::noparent = "DynamicModuleNumber not executed in DynamicModule";
-DynamicModuleNumber::nokids   = "DynamicModuleNumber can not access any variable of parent DynamicModule";
+DynamicModuleNumber::noparent = "Executed outside of DynamicModule.";
+DynamicModuleNumber::nokids   = "Can not access any variable of parent DynamicModule.";
 
 
 DynamicModuleNumber[]:= DynamicModuleNumber[FrontEnd`Private`names]
@@ -116,7 +116,6 @@ DynamicModuleNumber[  {Hold[sym_Symbol],___}]:= First @ StringCases[
 
 (* ::Section:: *)
 (*FrontEndModule*)
-
 
 
 FrontEndSymbolName[name_String, spec:(_String|_Integer)..]:= StringRiffle[
@@ -173,7 +172,11 @@ FrontEndModule[Hold[sym__Symbol],expr_, patt: OptionsPattern[]]:=DynamicModule[
 
 
 (* ::Section:: *)
-(*FrontEndSymbol setter*)
+(*FrontEndSymbol*)
+
+
+(* ::Subsection:: *)
+(*setters*)
 
 
 (*TODO: can this be cached per $DynamicModuleNumber? *)
@@ -183,7 +186,21 @@ FrontEndSymbol /: Set[FrontEndSymbol[name_?StringQ, spec: (_?IntegerQ|_?StringQ)
   FrontEndSymbolParsedName[name, spec, ($DynamicModuleNumber /. $Failed :> Throw @ $Failed)]
 , StandardForm
 , Function[symbol, symbol = val, HoldAll] 
-]
+];
+
+
+(* ::Subsection:: *)
+(*getters*)
+
+
+FrontEndSymbol[name_String, spec: (_Integer | _String)..] /; IntegerQ @ $DynamicModuleNumber := Symbol @ FrontEndSymbolParsedName[name, spec, $DynamicModuleNumber]
+
+
+(* ::Subsection:: *)
+(*attributes*)
+
+
+FrontEndSymbol // Attributes = {Protected};
 
 
 (* ::Chapter:: *)
