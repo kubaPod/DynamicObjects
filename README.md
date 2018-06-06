@@ -4,6 +4,25 @@ Mini framework helping to scale Dynamics up.
 
 There are many features and enhancements in the pipeline. 
 
+## Installation
+ 
+### Manual
+ 
+   Go to 'releases' tab and download appropriate .paclet file.
+    
+   Run `PacletInstall @ path/to/the.paclet` file
+   
+### Via ``MPM` ``
+   
+If you don't have ``MPM` `` yet, run:
+   
+    Import["https://raw.githubusercontent.com/kubapod/mpm/master/install.m"]
+   
+and then:
+   
+    Needs @ "MPM`"    
+    MPM`MPMInstall["kubapod", "dynamicobjects"]
+
 # Background 
 
 The problem with scaling of Dynamic is as explained here: [Allow multiple GUI elements to react dynamically to interaction with a single element](https://mathematica.stackexchange.com/q/128344/5478).
