@@ -1,10 +1,12 @@
-# DynamicObjects (in production...)
+# DynamicObjects
 
-Mini framework helping to scale Dynamics up
+Mini framework helping to scale Dynamics up. 
+
+There are many features and enhancements in the pipeline. 
 
 # Background 
 
-Will elaborate later, basically the problem with scaling of Dynamic is as explained here: [Allow multiple GUI elements to react dynamically to interaction with a single element](https://mathematica.stackexchange.com/q/128344/5478).
+The problem with scaling of Dynamic is as explained here: [Allow multiple GUI elements to react dynamically to interaction with a single element](https://mathematica.stackexchange.com/q/128344/5478).
 
 The solution to linked problem is not readable / approachable unless you are a power user:
 
