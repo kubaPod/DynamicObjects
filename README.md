@@ -31,6 +31,12 @@ The solution to linked problem is not readable / approachable unless you are a p
 
 
 ```Mathematica
+n = 120;
+names = Range[n];
+pts = AssociationThread[names -> N@CirclePoints[n]];
+edges = RandomSample[Subsets[names, {2}], 250];
+```
+```Mathematica
 DynamicModule[{}
 , Graphics[
     {
